@@ -1,0 +1,2986 @@
+:root {
+  --bg: #0c0c0c;
+  --bg-elevated: #1e1e1e;
+  --panel-bg: 30, 30, 30;
+  --border: #373737;
+  --text: #f4f4f4;
+  --text-dim: #9b9b9b;
+  --accent: #ff7f16;
+  --accent-dim: #c96b19;
+  --red: #f3333c;
+  --range-blue: #3f7fb7;
+  --chip-blue: #58a9ff;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+  /* Single source of truth for the 4 suit colors - three near-duplicate
+     palettes had drifted apart across this file (a real report: diamond
+     rendering red, identical to hearts, and clubs/spades silently
+     inheriting a dark default with no color of their own at all). */
+  --suit-heart: #ff5353;
+  --suit-diamond: #4c96cf;
+  --suit-club: #62c56f;
+  --suit-spade: #d7deeb;
+}
+
+:root[data-theme="midnight"] {
+  --bg: #0a0e1a;
+  --bg-elevated: #10162a;
+  --panel-bg: 6, 10, 24;
+  --border: #232c47;
+  --accent: #7dd3fc;
+  --accent-dim: #38a2c9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  background: #0c0c0c;
+  color: var(--text);
+  font-family: var(--font);
+  overflow: hidden;
+  user-select: none;
+}
+
+.app-shell {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 2.35rem minmax(0, 1fr);
+  background: #0c0c0c;
+}
+
+.app-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.55rem;
+  border-bottom: 1px solid #222222;
+  background: #0c0c0c;
+}
+
+.app-tab {
+  height: 1.55rem;
+  min-width: 4.5rem;
+  border: 1px solid #343434;
+  border-radius: 3px;
+  background: #1e1e1e;
+  color: #cfd6e3;
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.app-tab-active {
+  border-color: #77a0f3;
+  color: #ffffff;
+}
+
+.app-view {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+
+/* ---------- Settings ---------- */
+
+.settings-panel {
+  padding: 1.25rem 1.5rem 2rem;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.settings-panel h1 {
+  font-size: 1.3rem;
+  margin: 0 0 0.4rem;
+}
+
+.settings-subtitle {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin: 0 0 1.5rem;
+}
+
+.settings-panel section {
+  margin-bottom: 1.5rem;
+}
+
+.settings-panel h2 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin: 0 0 0.6rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.4rem;
+}
+
+.settings-note {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+.settings-warning {
+  color: var(--red);
+  background: rgba(255, 107, 122, 0.08);
+  border: 1px solid rgba(255, 107, 122, 0.3);
+  border-radius: 6px;
+  padding: 0.5rem 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.settings-table-row {
+  padding-left: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.status-ok {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.status-dim {
+  color: var(--text-dim);
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0;
+  font-size: 0.85rem;
+}
+
+.settings-row-slider {
+  gap: 0.75rem;
+}
+
+.settings-row-slider input[type="range"] {
+  flex: 1;
+  margin: 0 0.5rem;
+}
+
+.settings-slider-value {
+  min-width: 3.2rem;
+  text-align: right;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.settings-panel select {
+  background: var(--bg-elevated);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+}
+
+.settings-panel input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--accent-dim);
+}
+
+.settings-button {
+  background: var(--bg-elevated);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.settings-button:hover {
+  border-color: var(--accent-dim);
+}
+
+.settings-button-active {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+}
+
+
+.settings-panel input[type="text"] {
+  background: var(--bg-elevated);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  min-width: 12rem;
+}
+
+/* ---------- Tracker desktop shell ---------- */
+
+:root {
+  --dh-bg: #0b0d1c;
+  --dh-panel: #151a31;
+  --dh-panel-soft: #10152a;
+  --dh-border: #283452;
+  --dh-border-soft: #202947;
+  --dh-line: #4072EE;
+  --dh-blue: #315bb8;
+  --dh-blue-bright: #4072EE;
+  --dh-green: #5EF472;
+  --dh-red: #D74F57;
+  --dh-muted: #8998b8;
+  --dh-text: #f4f6ff;
+}
+
+body:has(.dh-shell) {
+  background: var(--dh-bg);
+  color: var(--dh-text);
+}
+
+.dh-main:has(.dh-mda-page) {
+  overflow: hidden;
+}
+
+.dh-shell.app-shell {
+  display: grid;
+  grid-template-columns: 13.2rem minmax(0, 1fr);
+  grid-template-rows: 2.85rem minmax(0, 1fr);
+  height: 100vh;
+  background: var(--dh-bg);
+  color: var(--dh-text);
+  overflow: hidden;
+}
+
+.dh-titlebar {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 2.85rem;
+  border-bottom: 1px solid #151c34;
+  background: #080a17;
+}
+
+.dh-titlebar-logo {
+  grid-column: 2;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 0.08em;
+}
+
+.dh-window-buttons {
+  grid-column: 3;
+  justify-self: end;
+  display: flex;
+  gap: 1.15rem;
+  padding-right: 1rem;
+}
+
+.dh-window-buttons span {
+  width: 0.95rem;
+  height: 0.65rem;
+  border: 1px solid #536076;
+  border-radius: 2px;
+  opacity: 0.62;
+}
+
+.dh-sidebar {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0.9rem 1.1rem;
+  border-right: 1px solid var(--dh-border-soft);
+  background: #0b0f20;
+}
+
+.dh-collapse {
+  color: #4978ff;
+  font-size: 1.15rem;
+  line-height: 1;
+  margin: 0.2rem 0 1.35rem 0.8rem;
+}
+
+.dh-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 2.8rem;
+  margin-bottom: 1rem;
+  color: var(--dh-text);
+}
+
+.dh-brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid #ee6c71;
+  color: #70d9ff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: #151b33;
+}
+
+.dh-brand strong,
+.dh-brand span {
+  display: block;
+}
+
+.dh-brand strong {
+  font-size: 0.96rem;
+  color: #19c4f3;
+  letter-spacing: 0.02em;
+}
+
+.dh-brand span {
+  color: var(--dh-muted);
+  font-size: 0.72rem;
+}
+
+.dh-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.dh-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  width: 100%;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dh-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dh-nav-item-active {
+  background: var(--dh-blue);
+}
+
+.dh-nav-icon {
+  display: grid;
+  place-items: center;
+  width: 1.65rem;
+  min-width: 1.65rem;
+  height: 1.65rem;
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 4px;
+}
+
+.dh-nav-icon svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.dh-nav-copy strong,
+.dh-nav-copy small {
+  display: block;
+}
+
+.dh-nav-copy strong {
+  font-size: 1rem;
+  line-height: 1.15;
+}
+
+.dh-nav-copy small {
+  color: #ffffff;
+  font-size: 0.68rem;
+}
+
+.dh-sidebar-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--dh-border-soft);
+}
+
+.dh-main {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  background: linear-gradient(180deg, #111830 0%, #0f1327 50%, #0d1022 100%);
+}
+
+.dh-workspace {
+  min-height: 100%;
+  padding: 0.9rem 1rem 1rem;
+}
+
+.dh-panel {
+  border: 1px solid var(--dh-border);
+  border-radius: 8px;
+  background: rgba(20, 25, 47, 0.94);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.dh-top-grid {
+  display: grid;
+  grid-template-columns: minmax(30rem, 0.75fr) minmax(34rem, 1.35fr);
+  gap: 0.9rem;
+}
+
+.dh-gauges-panel,
+.dh-chart-panel {
+  min-height: 16.2rem;
+  padding: 0.85rem 0.9rem;
+}
+
+.dh-gauges-panel {
+  /* In `.dh-top-grid` this panel stretches to match the taller Money Won
+     panel next to it, but the gauge cluster below used a fixed height -
+     a real report ("prea mult spațiu sub metrici") traced to that gap
+     between the fixed-height cluster and the stretched panel bottom.
+     Flex + the cluster set to flex:1 lets the cluster claim that space
+     instead of leaving it empty, and (via its own `align-items: end` and
+     the SVG's `max-height: 100%`) pushes the gauges down and renders them
+     a bit larger, rather than stranding them near the top. */
+  display: flex;
+  flex-direction: column;
+}
+
+.dh-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--dh-border-soft);
+  position: relative;
+}
+
+.dh-panel-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 6rem;
+  height: 2px;
+  background: var(--dh-line);
+}
+
+.dh-panel-header h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.08rem;
+  line-height: 1.2;
+}
+
+.dh-panel-header button,
+.dh-filter-bar select,
+.dh-toolbar select,
+.dh-toolbar button,
+.dh-store-header button,
+.dh-store-header input,
+.dh-leaks-panel select,
+.dh-primary-button {
+  height: 2rem;
+  border: 1px solid var(--dh-border);
+  border-radius: 6px;
+  background: var(--dh-blue);
+  color: #ffffff;
+  font: inherit;
+  font-size: 0.86rem;
+  padding: 0 0.85rem;
+}
+
+.dh-gauge-summary {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.55rem;
+  color: var(--dh-muted);
+  font-size: 0.75rem;
+}
+
+.dh-gauge-summary span { white-space: nowrap; }
+
+.dh-gauges-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.dh-gauges-header .dh-panel-header { min-width: 6rem; }
+
+.dh-gauge-cluster {
+  position: relative;
+  display: grid;
+  align-items: end;
+  min-width: 0;
+  flex: 1;
+  min-height: 12.6rem;
+}
+
+.dh-gauge-instruments {
+  display: block;
+  width: 100%;
+  max-width: 860px;
+  max-height: 100%;
+  margin-inline: auto;
+  overflow: visible;
+}
+
+.dh-gauge-instrument { outline: none; }
+.dh-gauge-instrument:focus-visible > path:first-child { stroke: #7d9cff; }
+.dh-gauge-glow { filter: drop-shadow(0 0 4px currentColor); }
+.dh-gauge-scale { fill: #e5e9f4; font-size: 13px; }
+.dh-gauge-value { fill: #f8f9ff; font-size: 20px; font-weight: 700; }
+.dh-gauge-value-main { font-size: 32px; }
+.dh-gauge-value-small { font-size: 13px; }
+.dh-gauge-label { fill: #859bb4; font-size: 14px; }
+.dh-gauge-label-small { fill: #859bb4; font-size: 10px; }
+.dh-gauge-tooltip {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  top: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid #58627a;
+  border-radius: 5px;
+  background: #161b2b;
+  color: #f3f5fa;
+  box-shadow: 0 6px 18px #0006;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  pointer-events: none;
+}
+.dh-gauge-tooltip span { display: block; color: #b3c1d1; margin-top: 0.3rem; }
+
+.dh-gauge-summary strong {
+  color: #ffffff;
+}
+
+.dh-chart {
+  height: 12.6rem;
+  display: grid;
+  place-items: center;
+}
+
+.dh-chart svg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.94;
+}
+
+.dh-money-chart-header {
+  min-height: 2.3rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.dh-money-chart-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 9rem;
+  padding: 0 0.15rem 0.58rem 0;
+  border-bottom: 1px solid var(--dh-border-soft);
+}
+
+.dh-money-chart-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 6rem;
+  height: 2px;
+  background: var(--dh-line);
+}
+
+.dh-money-chart-title h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.08rem;
+  line-height: 1.2;
+}
+
+.dh-money-chart-title span { color: #8296b6; font-size: 1rem; }
+
+.dh-money-chart-switches,
+.dh-money-chart-unit {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.dh-money-chart-switches button,
+.dh-money-chart-period button {
+  min-width: 2.25rem;
+  height: 1.65rem;
+  padding: 0 0.45rem;
+  border: 0;
+  border-radius: 5px;
+  color: #8492ad;
+  background: transparent;
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dh-money-chart-unit {
+  overflow: hidden;
+  border-radius: 5px;
+  background: #283653;
+}
+
+.dh-money-chart-unit button:first-child.active { background: #43844d; color: #fff; }
+.dh-money-chart-unit button:last-child.active { background: #2878b8; color: #fff; }
+.dh-money-line-toggle { color: #fff !important; opacity: 0.46; }
+.dh-money-line-toggle.active { opacity: 1; }
+.dh-money-line-sd { background: #3569c8 !important; }
+.dh-money-line-nsd { background: #bd4852 !important; }
+.dh-money-line-aiev { background: #60449e !important; }
+.dh-money-chart-switches button:disabled { opacity: 0.36; cursor: not-allowed; }
+
+.dh-money-chart-period {
+  min-height: 1.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.15rem;
+}
+
+.dh-money-chart-period button { min-width: auto; padding-inline: 0.42rem; }
+.dh-money-chart-period button.active { color: #4f8fff; }
+.dh-chart-point { opacity: 0.16; cursor: help; }
+.dh-chart-point:hover { opacity: 1; }
+
+.dh-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  min-height: 3.25rem;
+  color: var(--dh-muted);
+  font-size: 0.9rem;
+}
+
+.dh-filter-bar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #ffffff;
+}
+
+.dh-filter-bar input[type="checkbox"],
+.dh-toolbar input[type="checkbox"] {
+  width: 1.85rem;
+  height: 1.85rem;
+  accent-color: var(--dh-blue);
+}
+
+.dh-backup-path {
+  width: min(24rem, 28vw);
+  min-width: 12rem;
+  height: 2rem;
+  padding: 0 0.55rem;
+  border: 1px solid rgba(75, 91, 132, 0.72);
+  border-radius: 4px;
+  background: rgba(9, 13, 28, 0.72);
+  color: #eef3ff;
+  font: inherit;
+}
+
+.dh-backup-upload {
+  position: relative;
+  min-width: 14rem;
+  height: 2rem;
+  padding: 0 0.6rem;
+  border: 1px dashed rgba(94, 244, 114, 0.55);
+  border-radius: 4px;
+  background: rgba(94, 244, 114, 0.08);
+  color: #eef3ff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  cursor: pointer;
+}
+
+.dh-backup-upload span {
+  font-weight: 800;
+  color: #5ef472;
+  white-space: nowrap;
+}
+
+.dh-backup-upload strong {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #9fb2df;
+  font-size: 0.82rem;
+}
+
+.dh-backup-upload input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.dh-filter-button {
+  height: 2rem;
+  padding: 0 0.65rem;
+  border: 1px solid rgba(64, 114, 238, 0.62);
+  border-radius: 4px;
+  background: rgba(64, 114, 238, 0.2);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dh-filter-button:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+.dh-backup-message {
+  margin: -0.35rem 0 0.75rem;
+  color: #9fb2df;
+  font-size: 0.86rem;
+  text-align: right;
+}
+
+.dh-data-panel {
+  min-height: 20rem;
+  overflow: hidden;
+}
+
+.dh-dashboard-tabs {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  min-height: 3rem;
+  padding: 0 0.7rem;
+  border-bottom: 1px solid var(--dh-border-soft);
+  overflow-x: auto;
+}
+
+.dh-dashboard-tabs button {
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  color: var(--dh-muted);
+  font: inherit;
+  font-size: 1rem;
+  height: 3rem;
+  padding: 0 0.2rem;
+}
+
+.dh-dashboard-tabs button.active {
+  color: #ffffff;
+  border-bottom: 3px solid var(--dh-line);
+  font-weight: 700;
+}
+
+.dh-data-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(8rem, 1fr));
+}
+
+.dh-data-row {
+  min-height: 3.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid rgba(62, 75, 112, 0.35);
+  color: var(--dh-muted);
+}
+
+.dh-data-row strong {
+  min-width: 0;
+  color: #ffffff;
+  font-weight: 600;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dh-table-wrap {
+  width: 100%;
+  min-height: 17rem;
+  overflow: auto;
+  scrollbar-color: #61708e transparent;
+}
+
+.dh-stats-table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  color: #d7deef;
+  font-size: 0.82rem;
+  line-height: 1.1;
+  table-layout: fixed;
+}
+
+.dh-stats-table th,
+.dh-stats-table td {
+  height: 1.85rem;
+  padding: 0.16rem 0.55rem;
+  border-bottom: 1px solid rgba(73, 87, 124, 0.34);
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.dh-stats-table th {
+  color: #8190ab;
+  font-weight: 600;
+  background: rgba(22, 28, 51, 0.92);
+}
+
+.dh-stats-table td:first-child,
+.dh-stats-table th:first-child {
+  min-width: 8.5rem;
+  text-align: left;
+}
+
+.dh-stats-table tr.selected td {
+  background: rgba(53, 82, 139, 0.62);
+  color: #ffffff;
+}
+
+.dh-stats-table tfoot td {
+  position: sticky;
+  bottom: 0;
+  background: rgba(22, 28, 51, 0.96);
+  border-top: 1px solid rgba(98, 114, 153, 0.5);
+}
+
+.dh-history-wrap {
+  min-height: 13.5rem;
+  background: #12172c;
+}
+
+.dh-history-table th,
+.dh-history-table td {
+  height: 1.92rem;
+  padding: 0.12rem 0.45rem;
+  border-bottom: 1px solid rgba(81, 96, 136, 0.28);
+  background: #151a31;
+  font-size: 0.86rem;
+}
+
+.dh-history-table tbody tr:nth-child(even) td {
+  background: #12162a;
+}
+
+.dh-history-table tbody tr:hover td {
+  background: #1b2442;
+}
+
+.dh-history-table th {
+  height: 2.05rem;
+  color: #8392ae;
+  background: #161c33;
+  font-weight: 500;
+}
+
+.dh-history-table td:first-child,
+.dh-history-table th:first-child {
+  min-width: 9.6rem;
+  text-align: right;
+}
+
+.dh-card-run {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.18rem;
+  min-height: 1.25rem;
+  vertical-align: middle;
+}
+
+.dh-card-tile {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 1.22rem;
+  height: 1.22rem;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 0.73rem;
+  font-weight: 800;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.dh-card-red {
+  background: linear-gradient(180deg, #c9636d 0%, #94414d 100%);
+}
+
+.dh-card-green {
+  background: linear-gradient(180deg, #69b958 0%, #3d8240 100%);
+}
+
+.dh-card-blue {
+  background: linear-gradient(180deg, #6385c7 0%, #38588f 100%);
+}
+
+.dh-card-gray,
+.dh-card-dark {
+  background: linear-gradient(180deg, #7c8797 0%, #465061 100%);
+}
+
+.dh-action-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 5.45rem;
+  height: 1.25rem;
+  padding: 0 0.42rem;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #d09a2d 0%, #9b711c 100%);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.dh-preflop-badges {
+  display: inline-grid;
+  place-items: center;
+  min-height: 1.25rem;
+  vertical-align: middle;
+}
+
+.dh-preflop-badges-stacked {
+  gap: 1px;
+}
+
+.dh-preflop-badges-stacked .dh-action-pill {
+  height: 0.66rem;
+  min-height: 0;
+  border-radius: 2px;
+  font-size: 0.62rem;
+  line-height: 0.66rem;
+}
+
+.dh-action-pill-unopened {
+  background: linear-gradient(180deg, #697589 0%, #444e60 100%);
+}
+
+.dh-action-pill-raiser {
+  background: linear-gradient(180deg, #ad6676 0%, #894b5a 100%);
+}
+
+.dh-action-pill-limper {
+  background: linear-gradient(180deg, #d39a22 0%, #9c7118 100%);
+}
+
+.dh-action-pill-threebet {
+  background: linear-gradient(180deg, #d13b4c 0%, #9a2638 100%);
+}
+
+.dh-action-pill-callers {
+  background: linear-gradient(180deg, #4c9a5b 0%, #2f7440 100%);
+}
+
+.dh-action-text {
+  font-weight: 700;
+}
+
+.dh-action-run {
+  display: inline-flex;
+  justify-content: center;
+  gap: 0.28rem;
+  min-width: 3rem;
+}
+
+.dh-action-fold {
+  color: #ff5969;
+}
+
+.dh-action-check {
+  color: #5aa4ff;
+}
+
+.dh-action-call {
+  color: #f2c85b;
+}
+
+.dh-action-bet {
+  color: #ff9f29;
+}
+
+.dh-action-empty {
+  display: inline-block;
+  min-width: 2rem;
+}
+
+.dh-money-positive {
+  color: #38b865;
+}
+
+.dh-money-negative {
+  color: #ff5265;
+}
+
+.dh-muted-text {
+  color: #7f8daa;
+}
+
+.dh-no-data {
+  height: 9rem !important;
+  color: #9aa7bf;
+  text-align: center !important;
+}
+
+.dh-hand-panel {
+  margin-top: 0.9rem;
+  padding: 0.8rem 0.9rem;
+}
+
+.dh-hand-history-panel {
+  margin-top: 0.9rem;
+  overflow: hidden;
+}
+
+.dh-leak-cards {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(8rem, 1fr));
+  gap: 0.7rem;
+  margin-top: 0.9rem;
+}
+
+.dh-metric-pill {
+  min-height: 4.1rem;
+  display: grid;
+  align-content: center;
+  gap: 0.25rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--dh-border);
+  border-radius: 8px;
+  background: #1d2544;
+}
+
+.dh-metric-pill span {
+  color: var(--dh-muted);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+}
+
+.dh-metric-pill strong {
+  color: #ffffff;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.dh-empty-workspace,
+.dh-rd-panel,
+.dh-leaks-panel {
+  padding: 0.9rem;
+  min-height: 25rem;
+}
+
+.dh-toolbar,
+.dh-store-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.8rem;
+}
+
+.dh-store-header {
+  border: 0;
+  background: transparent;
+}
+
+.dh-store-header button {
+  background: transparent;
+  color: var(--dh-muted);
+  border-color: transparent;
+  font-size: 1.05rem;
+}
+
+.dh-store-header button.active {
+  color: #ffffff;
+  border-bottom: 3px solid var(--dh-line);
+  border-radius: 0;
+}
+
+.dh-store-header input {
+  margin-left: auto;
+  min-width: 12rem;
+}
+
+.dh-plot-empty {
+  min-height: 20rem;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+}
+
+.dh-mda-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(16rem, 1fr));
+  gap: 0.9rem;
+}
+
+.dh-mda-grid .dh-panel {
+  min-height: 18rem;
+  padding: 0.8rem;
+}
+
+.dh-bar-chart {
+  display: grid;
+  align-content: center;
+  gap: 1.6rem;
+  height: 13rem;
+}
+
+.dh-bar-chart span {
+  display: block;
+  height: 1rem;
+  min-width: 2rem;
+  border-radius: 5px;
+  background: #4cb959;
+}
+
+.dh-primary-button {
+  background: var(--dh-blue);
+  border: 0;
+  font-weight: 700;
+}
+
+.dh-leaks-panel h1 {
+  margin: 1.2rem 0 0.8rem;
+  font-size: 1.45rem;
+}
+
+.dh-leak-cards {
+  grid-template-columns: repeat(4, minmax(7rem, 1fr));
+  max-width: 35rem;
+}
+
+.dh-tool-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(16rem, 1fr));
+  gap: 1rem;
+}
+
+.dh-tool-card {
+  min-height: 22rem;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--dh-border);
+  border-radius: 8px;
+  background: rgba(20, 25, 47, 0.95);
+}
+
+.dh-tool-art {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1.55 / 1;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  background:
+    linear-gradient(135deg, #273b78 0%, #0f1730 50%, #4a2168 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dh-tool-card h2 {
+  margin: 0;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--dh-border-soft);
+  color: #ffffff;
+  font-size: 1.08rem;
+}
+
+.dh-tool-card p {
+  margin: 0;
+  color: #ffffff;
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+.dh-tool-card button {
+  height: 2rem;
+  border: 0;
+  border-radius: 8px;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  background: linear-gradient(180deg, #5c8bf6 0%, #3e72dc 58%, #7545e0 100%);
+}
+
+.dh-card-guide-panel {
+  min-height: 28rem;
+  padding: 0.85rem;
+}
+
+.dh-card-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(12rem, 1fr));
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+
+.dh-card-guide-item {
+  min-height: 8rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem;
+  border: 1px solid var(--dh-border);
+  border-radius: 8px;
+  background: #111832;
+}
+
+.dh-card-guide-item .dh-card-tile {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 6px;
+  font-size: 1.25rem;
+}
+
+.dh-card-guide-item > div > strong,
+.dh-card-guide-item > div > span {
+  display: block;
+}
+
+.dh-card-guide-item strong {
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.dh-card-guide-item > div > span {
+  margin-top: 0.25rem;
+  color: var(--dh-muted);
+  line-height: 1.3;
+}
+
+.dh-settings-workspace {
+  min-height: 100%;
+  padding: 1rem;
+}
+
+.dh-settings-workspace .settings-panel {
+  max-width: none;
+  min-height: calc(100vh - 4.85rem);
+  margin: 0;
+  padding: 1rem 1.2rem 1.5rem;
+  border: 1px solid var(--dh-border);
+  border-radius: 8px;
+  background: rgba(20, 25, 47, 0.96);
+  overflow: auto;
+}
+
+.dh-settings-workspace .settings-panel h1 {
+  margin: 0 0 0.75rem;
+  text-align: center;
+  font-size: 0.95rem;
+  font-style: italic;
+  letter-spacing: 0.08em;
+}
+
+.dh-settings-workspace .settings-panel h2 {
+  color: #ffffff;
+  font-size: 1.05rem;
+  border-bottom: 1px solid var(--dh-border);
+  padding-bottom: 0.55rem;
+}
+
+.dh-settings-workspace .settings-subtitle,
+.dh-settings-workspace .settings-note {
+  color: var(--dh-muted);
+}
+
+.dh-settings-workspace .settings-row {
+  border-color: rgba(79, 94, 135, 0.45);
+}
+
+.dh-settings-workspace .settings-button,
+.dh-settings-workspace select,
+.dh-settings-workspace input[type="text"] {
+  border-color: var(--dh-border);
+  background: var(--dh-blue);
+  color: #ffffff;
+}
+
+/* Hand-history row context menu ("View Hand" / "Replay Hand") and the two
+   separate windows those open - see `handWindows.ts`, `ViewHandWindow.tsx`,
+   `ReplayHandWindow.tsx`. */
+
+.dh-row-menu {
+  position: fixed;
+  z-index: 500;
+  min-width: 11rem;
+  background: var(--dh-panel);
+  border: 1px solid var(--dh-border);
+  border-radius: 0.4rem;
+  box-shadow: 0 0.6rem 1.6rem rgba(0, 0, 0, 0.45);
+  padding: 0.3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.dh-row-menu button {
+  background: transparent;
+  border: none;
+  color: var(--dh-text);
+  text-align: left;
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.3rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.dh-row-menu button:hover {
+  background: var(--dh-blue);
+}
+
+.dh-hand-window,
+.dh-replay-window {
+  min-height: 100vh;
+  padding: 1.1rem 1.3rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.dh-hand-window-empty {
+  color: var(--dh-muted);
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.dh-hand-window-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  border-bottom: 1px solid var(--dh-border-soft);
+  padding-bottom: 0.7rem;
+}
+
+.dh-hand-window-header strong {
+  font-size: 1.05rem;
+}
+
+.dh-hand-window-seats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 0.5rem;
+}
+
+.dh-hand-seat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--dh-panel-soft);
+  border: 1px solid var(--dh-border-soft);
+  border-radius: 0.35rem;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.82rem;
+}
+
+.dh-hand-seat-hero {
+  border-color: var(--dh-line);
+}
+
+.dh-hand-seat-position {
+  font-weight: 700;
+  color: var(--dh-muted);
+  min-width: 2.4rem;
+}
+
+.dh-hand-seat-name {
+  flex: 1;
+}
+
+.dh-hand-seat-button {
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--dh-red);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.05rem 0.35rem;
+}
+
+.dh-hand-window-dealt {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--dh-muted);
+}
+
+.dh-hand-window-streets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.dh-hand-street {
+  background: var(--dh-panel-soft);
+  border: 1px solid var(--dh-border-soft);
+  border-radius: 0.4rem;
+  padding: 0.6rem 0.8rem;
+}
+
+.dh-hand-street-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.4rem;
+}
+
+.dh-hand-street-pot {
+  color: var(--dh-green);
+  font-weight: 600;
+}
+
+.dh-hand-street-line {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--dh-text);
+}
+
+.dh-hand-window-results {
+  border-top: 1px solid var(--dh-border-soft);
+  padding-top: 0.6rem;
+}
+
+.dh-hand-window-results p {
+  margin: 0.15rem 0;
+  font-weight: 700;
+  color: var(--dh-green);
+}
+
+/* Replay window */
+
+.dh-replay-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.dh-replay-felt {
+  position: relative;
+  flex: 1;
+  min-height: 22rem;
+  background: radial-gradient(ellipse at center, #1c6b3a 0%, #0e3d20 78%, #092817 100%);
+  border: 0.5rem solid #3a2415;
+  border-radius: 50% / 40%;
+}
+
+.dh-replay-seat {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: rgba(11, 13, 28, 0.9);
+  border: 1px solid var(--dh-border);
+  border-radius: 0.4rem;
+  padding: 0.35rem 0.5rem;
+  min-width: 6.5rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--dh-text);
+}
+
+.dh-replay-seat-active {
+  border-color: var(--dh-line);
+  box-shadow: 0 0 0 2px rgba(67, 109, 243, 0.5);
+}
+
+.dh-replay-seat-folded {
+  opacity: 0.45;
+}
+
+.dh-replay-seat-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.dh-hero-tag {
+  background: var(--dh-blue);
+  color: #fff;
+  border-radius: 0.25rem;
+  padding: 0 0.3rem;
+  font-size: 0.65rem;
+}
+
+.dh-replay-button-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--dh-red);
+  display: inline-block;
+}
+
+.dh-replay-seat-stack {
+  font-weight: 600;
+}
+
+.dh-replay-seat-bet {
+  color: var(--dh-green);
+}
+
+.dh-replay-seat-fold-label {
+  color: var(--dh-muted);
+  font-style: italic;
+}
+
+.dh-replay-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.dh-replay-pot {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 999px;
+  padding: 0.15rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.dh-replay-log {
+  min-height: 1.4rem;
+  font-size: 0.85rem;
+  color: var(--dh-muted);
+  text-align: center;
+}
+
+.dh-replay-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  border-top: 1px solid var(--dh-border-soft);
+  padding-top: 0.7rem;
+}
+
+.dh-replay-street-tabs,
+.dh-replay-buttons {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.dh-replay-street-tabs button,
+.dh-replay-buttons button {
+  background: var(--dh-panel-soft);
+  border: 1px solid var(--dh-border);
+  color: var(--dh-text);
+  border-radius: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.dh-replay-street-tabs button.active {
+  background: var(--dh-blue);
+  border-color: var(--dh-blue-bright);
+}
+
+.dh-replay-street-tabs button:disabled,
+.dh-replay-buttons button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.dh-replay-progress {
+  color: var(--dh-muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+/* MDA - population preflop/postflop tendency charts */
+
+.dh-mda-page {
+  --mda-panel-small: 0;
+  --mda-panel-compact: 0;
+  --mda-panel-min: 0;
+  --mda-panel-mid: 0;
+  --mda-panel-large: 0;
+  --mda-panel-tall: 0;
+  --mda-panel-stack: 0;
+  --mda-chart-min: 0;
+  --mda-statbar-max: clamp(5.2rem, 14vh, 11rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0.55rem 0.75rem 0.75rem;
+}
+
+.dh-mda-toolbar {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid var(--dh-border-soft);
+  padding-bottom: 0.35rem;
+}
+
+.dh-mda-main-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  min-width: 0;
+}
+
+.dh-mda-main-tabs button {
+  background: none;
+  border: none;
+  color: var(--dh-muted);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.35rem 0 0.5rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  text-align: center;
+}
+
+.dh-mda-main-tabs button.active {
+  color: var(--dh-text);
+  border-bottom-color: var(--dh-line);
+}
+
+.dh-mda-game-type {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--dh-text);
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.dh-mda-game-type select {
+  min-width: 9.6rem;
+  height: 2rem;
+  background: var(--dh-blue-bright);
+  border: 1px solid #5f8cff;
+  color: #ffffff;
+  border-radius: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+}
+
+.dh-mda-game-type select:focus {
+  box-shadow: 0 0 0 2px rgba(95, 140, 255, 0.35);
+}
+
+.dh-mda-game-type option {
+  background: #2f4d86;
+  color: #ffffff;
+}
+
+.dh-mda-subtabs {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  border-bottom: 1px solid var(--dh-border-soft);
+  padding-bottom: 0;
+  min-width: 0;
+}
+
+.dh-mda-subtabs button {
+  flex: 1 1 0;
+  min-width: 0;
+  background: none;
+  border: none;
+  color: var(--dh-muted);
+  font-size: 0.82rem;
+  padding: 0.55rem 0.35rem 0.42rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  text-align: center;
+  line-height: 1.05;
+}
+
+.dh-mda-subtabs button.active {
+  color: var(--dh-text);
+  border-bottom-color: var(--dh-line);
+  font-weight: 700;
+}
+
+.dh-mda-note-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.dh-mda-page .dh-workspace {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.dh-mda-game-scope {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.dh-mda-note-wrap > .dh-mda-grid-2,
+.dh-mda-note-wrap > .dh-mda-grid-3,
+.dh-mda-note-wrap > .dh-mda-grid-4,
+.dh-mda-note-wrap > .dh-mda-grid-5,
+.dh-mda-note-wrap > .dh-mda-grid-defense-rfi,
+.dh-mda-note-wrap > .dh-mda-grid-even2,
+.dh-mda-note-wrap > .dh-mda-donut-page {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.dh-mda-page .dh-panel {
+  padding: 20px;
+  border-color: rgba(70, 83, 120, 0.72);
+  background: #151a31;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.dh-mda-page .dh-panel-header {
+  padding-bottom: 8px;
+}
+
+.dh-mda-page .dh-panel-header h2 {
+  font-size: 1rem;
+}
+
+.dh-mda-note-row {
+  display: none;
+}
+
+.dh-mda-note {
+  color: var(--dh-muted);
+  font-size: 0.78rem;
+  margin: 0;
+}
+
+.dh-mda-note-wrap > .dh-mda-note {
+  display: none;
+}
+
+.dh-mda-loading,
+.dh-mda-not-built p {
+  color: var(--dh-muted);
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.dh-mda-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: stretch;
+}
+
+.dh-mda-grid-2 {
+  display: grid;
+  /* Asymmetric on purpose: the reference always gives "Positional VPIP /
+     PFR by Seat" (or whichever chart needs room for 6 category labels
+     plus a legend) roughly double the width of its neighbor, never an
+     even 50/50 split. */
+  grid-template-columns: 1fr 2fr;
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: stretch;
+  margin-bottom: 0.9rem;
+}
+
+/* Inside `.dh-mda-grid-3`, marks a panel to take the remaining two-thirds
+   of its row instead of the usual one column - with the wide panel placed
+   second in the JSX order, CSS grid's own auto-placement naturally lands
+   it in columns 2-3 of whichever row it starts, giving the same 1-then-2
+   split `.dh-mda-grid-2` uses, from the same 3-column grid the rest of the
+   panels already share. */
+.dh-mda-panel-wide {
+  grid-column: span 2;
+}
+
+.dh-mda-grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: stretch;
+}
+
+.dh-mda-grid-2 .dh-panel {
+  min-height: var(--mda-panel-min);
+  display: flex;
+  flex-direction: column;
+}
+
+.dh-mda-grid-5 .dh-panel {
+  min-height: var(--mda-panel-mid);
+  display: flex;
+  flex-direction: column;
+}
+
+.dh-mda-grid-defense-rfi {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.05fr) minmax(0, 1.05fr);
+  grid-template-rows: minmax(0, 1.08fr) minmax(0, 1fr) minmax(0, 0.92fr);
+  gap: 0.9rem;
+  align-items: stretch;
+}
+
+.dh-mda-grid-defense-rfi .dh-panel {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dh-mda-defense-win {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+
+.dh-mda-defense-fold {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.dh-mda-defense-threebet {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.dh-mda-defense-call {
+  grid-column: 3;
+  grid-row: 1 / span 3;
+}
+
+.dh-mda-defense-steal {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.dh-mda-defense-late-steal {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.dh-mda-grid-cold-call {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1.06fr) minmax(0, 1fr) minmax(0, 0.86fr);
+  gap: 0.9rem;
+  align-items: stretch;
+}
+
+.dh-mda-grid-cold-call .dh-panel {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dh-mda-cold-frequency {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.dh-mda-cold-vpip {
+  grid-column: 2 / span 2;
+  grid-row: 1;
+}
+
+.dh-mda-cold-winrate {
+  grid-column: 1;
+  grid-row: 2 / span 2;
+}
+
+.dh-mda-cold-threebet {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+}
+
+.dh-mda-cold-fold-open {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.dh-mda-cold-position {
+  grid-column: 3;
+  grid-row: 3;
+}
+
+/* Reference screenshots give every MDA panel real vertical weight (each
+   one comfortably fits 6-9 rows or a tall chart) - a real report ("your
+   charts are too small in height") traced to these being sized to their
+   content instead of a fixed floor, so a 2-row chart and a 9-row chart
+   ended up wildly different heights side by side. */
+.dh-mda-grid-3 .dh-panel {
+  min-height: var(--mda-panel-min);
+  display: flex;
+  flex-direction: column;
+}
+
+.dh-mda-bars {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex: 1;
+  gap: 0.9rem;
+  padding-top: 0.6rem;
+}
+
+.dh-mda-bar-row {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 9rem) 1fr minmax(3.5rem, auto);
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+}
+
+.dh-mda-bar-label {
+  color: var(--dh-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dh-mda-bar-track {
+  position: relative;
+  height: 0.9rem;
+  background: var(--dh-panel-soft);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dh-mda-bar-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+}
+
+.dh-mda-bar-fill-sequential {
+  left: 0;
+  background: var(--dh-blue-bright);
+}
+
+.dh-mda-bar-track-diverging {
+  background: var(--dh-panel-soft);
+  overflow: visible;
+}
+
+.dh-mda-bar-zero {
+  position: absolute;
+  left: 50%;
+  top: -0.15rem;
+  bottom: -0.15rem;
+  width: 1px;
+  background: var(--dh-border);
+}
+
+.dh-mda-bar-fill-positive {
+  background: var(--dh-blue-bright);
+}
+
+.dh-mda-bar-fill-negative {
+  background: var(--dh-red);
+}
+
+.dh-mda-bar-value {
+  text-align: right;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.dh-mda-note-row {
+  display: none;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.dh-mda-note-row .dh-mda-note {
+  flex: 1;
+}
+
+.dh-mda-refresh {
+  flex-shrink: 0;
+  background: var(--dh-panel-soft);
+  border: 1px solid var(--dh-border);
+  color: var(--dh-text);
+  border-radius: 0.3rem;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dh-mda-refresh:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.dh-mda-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.72rem;
+  color: var(--dh-muted);
+}
+
+.dh-mda-legend-right {
+  justify-content: flex-end;
+}
+
+.dh-mda-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.dh-mda-legend-item i {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.dh-mda-bar-row-grouped {
+  grid-template-columns: minmax(6.5rem, 9rem) 1fr minmax(5.5rem, auto);
+}
+
+.dh-mda-bar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.dh-mda-bar-group .dh-mda-bar-track {
+  height: 0.5rem;
+}
+
+.dh-mda-bar-value-grouped {
+  font-size: 0.76rem;
+}
+
+.dh-mda-axis-chart {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  padding-top: 0;
+  min-width: 0;
+  min-height: var(--mda-chart-min);
+  overflow: hidden;
+}
+
+.dh-mda-axis-chart svg {
+  flex: 1 1 auto;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  display: block;
+  overflow: visible;
+}
+
+.dh-mda-vgroup-chart {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  min-width: 0;
+  padding-top: 0;
+  overflow: hidden;
+}
+
+.dh-mda-vgroup-chart svg {
+  flex: 1 1 auto;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  display: block;
+  overflow: visible;
+}
+
+.dh-mda-svg-chart {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--mda-chart-min);
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  padding-top: 0;
+  overflow: hidden;
+}
+
+.dh-mda-svg-chart svg,
+.dh-mda-archetype-chart {
+  flex: 1 1 auto;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  display: block;
+  overflow: visible;
+}
+
+/* "Preflop Archetype Distribution" is a single wide panel (unlike every
+   other Preflop sub-tab's 2-3 column grid) - centered with a real max
+   width instead of stretching a donut across the full workspace. */
+.dh-mda-donut-page {
+  display: flex;
+  justify-content: center;
+}
+
+.dh-mda-donut-page .dh-panel {
+  width: 100%;
+  max-width: 640px;
+  min-height: var(--mda-panel-min);
+  display: flex;
+  flex-direction: column;
+}
+
+.dh-mda-donut-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding-top: 0;
+  min-width: 0;
+}
+
+.dh-mda-donut-wrap svg {
+  width: clamp(9.5rem, 22vh, 13rem);
+  height: clamp(9.5rem, 22vh, 13rem);
+  flex-shrink: 0;
+}
+
+.dh-mda-donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.dh-mda-donut-legend-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+}
+
+/* Flop tabs: DriveHud's small "row label + bar + Weak:31 tag + lettered
+   values" panels. Header letters and value cells share one column width so
+   every row lines up under its letter. */
+.dh-mda-statbar {
+  --dh-col: 2.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.55rem;
+  padding-top: 0.2rem;
+  min-width: 0;
+}
+
+.dh-mda-statbar-head,
+.dh-mda-statbar-row {
+  display: grid;
+  grid-template-columns: var(--dh-label, 3.5rem) minmax(0, 1fr) 4.4rem calc(var(--dh-cols, 2) * var(--dh-col));
+  align-items: center;
+  column-gap: 0.4rem;
+}
+
+.dh-mda-statbar-head {
+  min-height: 1.3rem;
+  font-size: 0.7rem;
+  color: var(--dh-muted);
+  font-weight: 700;
+}
+
+.dh-mda-statbar-badge-slot {
+  grid-column: 1 / span 3;
+}
+
+.dh-mda-small-sample {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+  border-radius: 0.25rem;
+  background: #e8632a;
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+}
+
+.dh-mda-statbar-cols {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: var(--dh-col);
+  text-align: center;
+}
+
+.dh-mda-statbar-row {
+  font-size: 0.85rem;
+}
+
+.dh-mda-statbar-row .dh-mda-statbar-cols {
+  color: var(--dh-text);
+  font-weight: 600;
+}
+
+.dh-mda-statbar-label {
+  color: var(--dh-muted);
+  opacity: 0.85;
+}
+
+.dh-mda-statbar-track {
+  display: flex;
+  height: 0.85rem;
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+.dh-mda-statbar-track-empty {
+  opacity: 1;
+}
+
+.dh-mda-statbar-lead {
+  display: block;
+  flex: none;
+  height: 100%;
+}
+
+.dh-mda-statbar-rest {
+  display: block;
+  flex: 1;
+  height: 100%;
+}
+
+.dh-mda-statbar-tag {
+  color: var(--dh-muted);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+/* Insight headline + boxed sentence pinned to the bottom of a panel. */
+.dh-mda-insight {
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.dh-mda-insight-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dh-mda-insight-red { color: #f0453a; }
+.dh-mda-insight-yellow { color: #f5a524; }
+.dh-mda-insight-green { color: #3cb54a; }
+.dh-mda-insight-blue { color: #3b82f6; }
+.dh-mda-insight-muted { color: var(--dh-muted); }
+
+.dh-mda-insight-box {
+  height: clamp(2.55rem, 7vh, 3.55rem);
+  overflow-y: auto;
+  padding: 0.4rem 0.65rem;
+  border-radius: 0.4rem;
+  background: #24356e;
+  color: #eef2ff;
+  font-size: 0.84rem;
+  line-height: 1.3;
+  scrollbar-width: thin;
+  scrollbar-color: #6f88dd transparent;
+}
+
+.dh-mda-panel-rel {
+  position: relative;
+}
+
+.dh-mda-panel-tall {
+  grid-row: span 2;
+}
+
+.dh-mda-grid-flop .dh-panel {
+  min-height: var(--mda-panel-compact);
+}
+
+.dh-mda-grid-even2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: stretch;
+}
+
+.dh-mda-grid-even2 .dh-panel {
+  min-height: var(--mda-panel-small);
+  display: flex;
+  flex-direction: column;
+}
+
+/* "EV BB/100 by Street": ring legend in the panel's top-right corner, and
+   a taller plot than the standard 300px charts since it spans two rows. */
+.dh-mda-legend-corner {
+  position: absolute;
+  top: 0.9rem;
+  right: 1rem;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.72rem;
+  color: var(--dh-muted);
+}
+
+.dh-mda-legend-ring {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  border: 2px solid;
+  background: transparent;
+}
+
+.dh-mda-tallchart {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  padding-top: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+.dh-mda-tallchart svg {
+  flex: 1 1 auto;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  display: block;
+  overflow: visible;
+}
+
+/* Flop heatmaps: full-bleed red -> green cells in a rounded dark frame. */
+.dh-mda-heatmap-flop {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: #1a2140;
+  font-size: 0.78rem;
+}
+
+.dh-mda-heatmap-flop th,
+.dh-mda-heatmap-flop td {
+  border: 0;
+  padding: 0;
+  height: clamp(1.75rem, 5.2vh, 3.3rem);
+  white-space: normal;
+  line-height: 1.05;
+}
+
+.dh-mda-heatmap-flop thead th {
+  height: clamp(1.25rem, 3.5vh, 2.2rem);
+  padding: 0 0.15rem;
+  font-size: 0.72rem;
+  color: #eef2ff;
+  font-weight: 500;
+}
+
+.dh-mda-heatmap-flop tbody th {
+  width: 2.6rem;
+  color: #eef2ff;
+  font-weight: 500;
+}
+
+.dh-mda-heatmap-flop td {
+  color: #fff;
+  font-weight: 600;
+}
+
+.dh-mda-heatmap-flop .dh-mda-heatmap-cell-flop-empty {
+  background: #8f464d;
+  color: rgba(246, 239, 241, 0.72);
+}
+
+.dh-mda-donut-legend-value {
+  color: var(--dh-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dh-mda-heatmap-wrap {
+  overflow-x: auto;
+  padding-top: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dh-mda-heatmap {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.84rem;
+}
+
+.dh-mda-heatmap th,
+.dh-mda-heatmap td {
+  border: 1px solid var(--dh-border-soft);
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.dh-mda-heatmap thead th {
+  color: var(--dh-muted);
+  font-weight: 600;
+}
+
+.dh-mda-heatmap tbody th {
+  color: var(--dh-muted);
+  font-weight: 700;
+  text-align: left;
+}
+
+.dh-mda-heatmap-cell {
+  color: var(--dh-text);
+  font-weight: 600;
+}
+
+.dh-mda-heatmap-cell-empty {
+  color: rgba(246, 239, 241, 0.72);
+  background: #8f464d;
+  font-weight: 600;
+}
+
+.dh-mda-fcr {
+  padding-top: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.dh-mda-fcr-track {
+  display: flex;
+  height: 2.2rem;
+  border-radius: 0.4rem;
+  overflow: hidden;
+}
+
+.dh-mda-fcr-track span {
+  display: block;
+  height: 100%;
+}
+
+.dh-mda-fcr-empty {
+  color: var(--dh-muted);
+  font-size: 0.8rem;
+  padding: 0.6rem 0;
+  text-align: center;
+}
+
+.dh-mda-fcr-values {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.72rem;
+  color: var(--dh-muted);
+}
+
+/* Flop Aggression Efficiency: 4-column grid, first panel spans two. */
+.dh-mda-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: stretch;
+}
+
+.dh-mda-grid-4 .dh-panel {
+  min-height: var(--mda-panel-min);
+  display: flex;
+  flex-direction: column;
+}
+
+.dh-mda-span-2 {
+  grid-column: span 2;
+}
+
+.dh-mda-grid-arch-dist .dh-panel {
+  min-height: var(--mda-panel-large);
+}
+
+.dh-mda-grid-arch-dist .dh-mda-stack {
+  min-height: var(--mda-panel-large);
+}
+
+.dh-mda-grid-arch-dist .dh-mda-stack .dh-panel {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.dh-mda-grid-arch-dist .dh-mda-insight-box {
+  height: clamp(2.45rem, 6.5vh, 3.2rem);
+}
+
+.dh-mda-grid-arch-dist .dh-mda-stack .dh-mda-axis-chart {
+  padding-top: 0.45rem;
+  min-height: 0;
+}
+
+.dh-mda-grid-arch-dist .dh-mda-stack .dh-mda-axis-chart svg {
+  min-height: 0;
+}
+
+.dh-mda-grid-pos-real .dh-panel {
+  min-height: var(--mda-panel-mid);
+}
+
+.dh-mda-grid-pos-real .dh-mda-panel-tall {
+  grid-row: span 2;
+  min-height: var(--mda-panel-tall);
+}
+
+.dh-mda-grid-pos-real .dh-mda-heatmap-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.dh-mda-grid-pos-real .dh-mda-heatmap {
+  width: 100%;
+}
+
+.dh-mda-grid-pos-real .dh-mda-insight-box {
+  height: clamp(2.45rem, 6.5vh, 3.35rem);
+}
+
+.dh-mda-grid-ev-stability .dh-mda-panel-tall {
+  grid-row: span 2;
+  min-height: var(--mda-panel-tall);
+}
+
+.dh-mda-grid-ev-stability .dh-panel:not(.dh-mda-panel-tall) {
+  min-height: var(--mda-panel-min);
+}
+
+.dh-mda-hbar {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--mda-chart-min);
+  padding-top: 0;
+  overflow: hidden;
+}
+
+.dh-mda-hbar svg {
+  flex: 1 1 auto;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  display: block;
+  overflow: visible;
+}
+
+/* Flop Over-calling: "Player Type | Hands | Share | metric" tables. */
+.dh-mda-archtable-wrap {
+  flex: 1;
+  min-width: 0;
+  padding-top: 0;
+}
+
+.dh-mda-archtable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.dh-mda-archtable th {
+  padding: 0.55rem 0.4rem;
+  color: var(--dh-muted);
+  font-weight: 500;
+  text-align: center;
+  border-bottom: 1px solid rgba(135, 153, 190, 0.3);
+}
+
+.dh-mda-archtable td {
+  padding: 0.28rem 0.4rem;
+  text-align: center;
+  color: var(--dh-text);
+  border-bottom: 1px solid rgba(135, 153, 190, 0.2);
+}
+
+.dh-mda-archtable th:first-child,
+.dh-mda-archtable td:first-child {
+  text-align: left;
+}
+
+.dh-mda-archicon {
+  display: inline-block;
+  width: 1.6rem;
+}
+
+/* Two small panels sharing one grid cell (Fold to Flop C-Bet / Turn Fold). */
+.dh-mda-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  min-width: 0;
+  min-height: 0;
+}
+
+.dh-mda-grid-flop .dh-mda-stack .dh-panel {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.dh-mda-stack .dh-mda-statbar {
+  overflow-y: auto;
+  max-height: var(--mda-statbar-max);
+  scrollbar-width: thin;
+  scrollbar-color: #6f88dd transparent;
+}
+
+@media (max-width: 1500px) {
+  .dh-mda-grid-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .dh-mda-grid-4,
+  .dh-mda-grid-river-overbet-bottom {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1320px) {
+  .dh-mda-grid-3,
+  .dh-mda-grid-cold-call,
+  .dh-mda-grid-defense-rfi,
+  .dh-mda-grid-turn-roi,
+  .dh-mda-grid-turn-balance,
+  .dh-mda-grid-river-bluff {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dh-mda-grid-defense-rfi {
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+  }
+
+  .dh-mda-grid-cold-call {
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+  }
+
+  .dh-mda-grid-defense-rfi > .dh-panel {
+    grid-column: auto;
+  }
+
+  .dh-mda-grid-cold-call > .dh-panel {
+    grid-column: auto;
+  }
+
+  .dh-mda-defense-win,
+  .dh-mda-defense-call {
+    grid-row: span 2;
+  }
+
+  .dh-mda-defense-fold,
+  .dh-mda-defense-threebet,
+  .dh-mda-defense-steal,
+  .dh-mda-defense-late-steal {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .dh-mda-cold-vpip,
+  .dh-mda-cold-winrate,
+  .dh-mda-cold-threebet {
+    grid-row: span 2;
+  }
+
+  .dh-mda-cold-frequency,
+  .dh-mda-cold-fold-open,
+  .dh-mda-cold-position {
+    grid-row: auto;
+  }
+
+  .dh-mda-grid-2 {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr);
+  }
+}
+
+@media (max-width: 1100px) {
+  .dh-mda-grid-2,
+  .dh-mda-grid-3,
+  .dh-mda-grid-4,
+  .dh-mda-grid-5,
+  .dh-mda-grid-cold-call,
+  .dh-mda-grid-defense-rfi,
+  .dh-mda-grid-even2,
+  .dh-mda-grid-turn-roi,
+  .dh-mda-grid-turn-balance,
+  .dh-mda-grid-river-bluff,
+  .dh-mda-grid-river-overbet-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .dh-mda-span-2,
+  .dh-mda-panel-wide,
+  .dh-mda-cold-frequency,
+  .dh-mda-cold-vpip,
+  .dh-mda-cold-winrate,
+  .dh-mda-cold-threebet,
+  .dh-mda-cold-fold-open,
+  .dh-mda-cold-position,
+  .dh-mda-defense-win,
+  .dh-mda-defense-call,
+  .dh-mda-river-span-2 {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .dh-mda-grid-ev-stability .dh-mda-panel-tall {
+    grid-row: auto;
+    min-height: var(--mda-panel-min);
+  }
+}
+
+/* Over-calling's panels are as tall as the reference's (~31rem), which is
+   also what gives the two stacked small panels room for a few bar rows. */
+.dh-mda-grid-overcall .dh-panel {
+  min-height: var(--mda-panel-large);
+}
+
+.dh-mda-grid-overcall .dh-mda-stack .dh-panel {
+  min-height: 0;
+}
+
+/* Turn tabs: same DriveHud panel family as Flop, with the screenshot's
+   two-wide opener row, 4x2 archetype heatmaps, and ROI side stack. */
+.dh-mda-grid-turn-top {
+  margin-bottom: 0.9rem;
+}
+
+.dh-mda-grid-turn-top .dh-panel {
+  min-height: var(--mda-panel-compact);
+}
+
+.dh-mda-grid-turn .dh-panel {
+  min-height: var(--mda-panel-compact);
+}
+
+.dh-mda-grid-turn-arch .dh-panel {
+  min-height: var(--mda-panel-mid);
+}
+
+.dh-mda-grid-turn-roi {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.dh-mda-grid-turn-roi > .dh-mda-stack {
+  grid-row: span 2;
+}
+
+.dh-mda-grid-turn-roi .dh-mda-stack .dh-panel {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.dh-mda-grid-turn-roi > .dh-panel {
+  min-height: var(--mda-panel-mid);
+}
+
+.dh-mda-grid-turn-roi .dh-mda-stack .dh-mda-insight-box {
+  height: clamp(2.35rem, 6vh, 3rem);
+}
+
+.dh-mda-grid-turn-oop-top,
+.dh-mda-grid-turn-oop-mid {
+  margin-bottom: 0.9rem;
+}
+
+.dh-mda-grid-turn-oop-top .dh-panel,
+.dh-mda-grid-turn-oop-bottom .dh-panel {
+  min-height: var(--mda-panel-compact);
+}
+
+.dh-mda-grid-turn-oop-mid .dh-panel {
+  min-height: var(--mda-panel-compact);
+}
+
+.dh-mda-grid-turn-oop-top .dh-mda-statbar,
+.dh-mda-grid-turn-oop-bottom .dh-mda-statbar,
+.dh-mda-grid-turn-oop-mid .dh-mda-statbar {
+  overflow-y: auto;
+  max-height: clamp(10rem, 22vh, 17rem);
+  scrollbar-width: thin;
+}
+
+.dh-mda-grid-turn-balance {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dh-mda-grid-turn-balance > .dh-mda-stack {
+  grid-row: span 2;
+}
+
+.dh-mda-grid-turn-balance > .dh-panel {
+  min-height: var(--mda-panel-large);
+}
+
+.dh-mda-grid-turn-balance .dh-mda-stack .dh-panel {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.dh-mda-grid-turn-balance .dh-mda-stack .dh-mda-heatmap-flop th,
+.dh-mda-grid-turn-balance .dh-mda-stack .dh-mda-heatmap-flop td {
+  height: 1.45rem;
+}
+
+.dh-mda-grid-turn-balance .dh-mda-stack .dh-mda-heatmap-flop thead th {
+  height: 1.35rem;
+}
+
+.dh-mda-grid-turn-balance .dh-mda-stack .dh-mda-insight-box {
+  height: clamp(2.35rem, 6vh, 3rem);
+}
+
+.dh-mda-grid-turn-leverage .dh-panel {
+  min-height: var(--mda-panel-large);
+}
+
+.dh-mda-grid-turn-leverage .dh-mda-axis-chart {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.dh-mda-grid-river-overbet-top {
+  margin-bottom: 0.9rem;
+}
+
+.dh-mda-grid-river-overbet-top .dh-panel,
+.dh-mda-grid-river-overbet-bottom .dh-panel {
+  min-height: var(--mda-panel-large);
+}
+
+.dh-mda-grid-river-bluff {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dh-mda-grid-river-bluff .dh-panel {
+  min-height: var(--mda-panel-mid);
+}
+
+.dh-mda-river-span-2 {
+  grid-column: span 2;
+}
+
+.dh-mda-grid-river-arch .dh-panel {
+  min-height: var(--mda-panel-large);
+}
+
+.dh-mda-grid-river-sizing-top {
+  margin-bottom: 0.9rem;
+}
+
+.dh-mda-grid-river-sizing-top .dh-panel {
+  min-height: var(--mda-panel-compact);
+}
+
+.dh-mda-grid-river-sizing-wide .dh-panel {
+  min-height: var(--mda-panel-mid);
+}
+
+.dh-mda-grid-river-sizing-top .dh-mda-statbar,
+.dh-mda-grid-river-sizing-wide .dh-mda-statbar {
+  overflow-y: auto;
+  max-height: clamp(10rem, 22vh, 17rem);
+  scrollbar-width: thin;
+}
+
+@media (max-width: 1100px) {
+  .dh-mda-grid-turn-roi {
+    grid-template-columns: 1fr;
+  }
+
+  .dh-mda-grid-turn-roi > .dh-mda-stack {
+    grid-row: auto;
+  }
+
+  .dh-mda-grid-turn-balance {
+    grid-template-columns: 1fr;
+  }
+
+  .dh-mda-grid-turn-balance > .dh-mda-stack {
+    grid-row: auto;
+  }
+
+  .dh-mda-grid-river-bluff {
+    grid-template-columns: 1fr;
+  }
+
+  .dh-mda-river-span-2 {
+    grid-column: auto;
+  }
+}

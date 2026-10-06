@@ -1,0 +1,17 @@
+[package]
+name = "softpoker-hand-evaluator"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+softpoker-game-state = { workspace = true }
+serde = { workspace = true }
+thiserror = { workspace = true }
+# Apache-2.0, MIT-compatible. Battle-tested 7-card evaluator (50M+ hands/sec
+# per the project's own benchmarks) — see ARCHITECTURE.md for why we wrap
+# this instead of writing our own perfect-hash evaluator (spec section 11).
+rs_poker = "=5.0.0"
+
+[dev-dependencies]
